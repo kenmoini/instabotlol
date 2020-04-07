@@ -6,7 +6,7 @@ ENV USER defaultUser
 ENV PASS defaultPass
 ENV SIMULATION True
 
-RUN apt-get update && apt-cache search firefox && apt-get install -y --no-install-recommends wget git firefox-esr \
+RUN apt-get update && apt-get install -y --no-install-recommends wget git firefox-esr \
 	&& rm -rf /var/lib/apt/lists/*
 
 RUN git clone https://github.com/kenmoini/instabotlol \
