@@ -9,8 +9,9 @@ ENV SIMULATION True
 RUN apt-get update && apt-get install -y --no-install-recommends wget git \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN pip install instapy \
- && git clone https://github.com/kenmoini/instabotlol \
- && cp instabotlol/app.py .
+RUN git clone https://github.com/kenmoini/instabotlol \
+ && cd instabotlol
+ && pip install -r requirements.txt \
+ && cp main.py ..
  
-CMD python app.py
+CMD python main.py
