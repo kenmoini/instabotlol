@@ -3,7 +3,7 @@ import os
 
 // Instapy Documentation: https://github.com/timgrossmann/InstaPy/blob/master/DOCUMENTATION.md
 
-session = InstaPy(username=os.environ.get('USER'), password=os.environ.get('PASS'))
+session = InstaPy(username=os.environ.get('USER'), password=os.environ.get('PASS'), headless_browser=True)
 session.login()
 
 //Set quota limits to keep Instagram from banning you because it thinks you're a bot
@@ -22,5 +22,12 @@ session.set_do_follow(True, percentage=50)
 // Auto-Commenting - Disabled by default
 session.set_do_comment(False, percentage=50)
 session.set_comments(["Nice!", "Sweet!", "Beautiful :heart_eyes:"])
+
+// Additional filters
+session.set_skip_users(skip_private=True, private_percentage=100, skip_no_profile_pic=True, no_profile_pic_percentage=100,
+ skip_business=False, skip_non_business=False, business_percentage=100, skip_business_categories=[], dont_skip_business_categories=[])
+
+// Dont waste time following people with over 8.5k followers
+session.set_relationship_bounds(enabled=True, max_followers=8500)
 
 session.end()
