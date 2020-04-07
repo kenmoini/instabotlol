@@ -5,12 +5,11 @@ FROM python:3.7-slim
 ENV USER defaultUser
 ENV PASS defaultPass
 
-# Install production dependencies.
-RUN pip install instapy \
- && wget https://raw.githubusercontent.com/kenmoini/instabotlol/master/app.py
+RUN apt-get update && apt-get install -y --no-install-recommends wget git \
+	&& rm -rf /var/lib/apt/lists/*
 
-# Run the web service on container startup. Here we use the gunicorn
-# webserver, with one worker process and 8 threads.
-# For environments with multiple CPU cores, increase the number of workers
-# to be equal to the cores available.
+RUN pip install instapy \
+ && git clone https://github.com/kenmoini/instabotlol \
+ && cp instabotlol/app.py .
+ 
 CMD python app.py
