@@ -1,5 +1,28 @@
-from instapy import InstaPy
 import os
+import sys
+from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+from instapy import InstaPy
+
+## Start a simple HTTP Server
+
+#This class will handles any incoming request from
+#the browser 
+class myHandler(BaseHTTPRequestHandler):	
+  #Handler for the GET requests
+  def do_GET(self):
+    self.send_response(200)
+    self.send_header('Content-type','text/html')
+    self.end_headers()
+    # Send the html message
+    self.wfile.write("ok")
+    return
+  
+server = HTTPServer(('', 8080), myHandler)
+print 'Started httpserver on port 8080'
+	
+#Wait forever for incoming htto requests
+server.serve_forever()
+
 
 ## Instapy Documentation: https://github.com/timgrossmann/InstaPy/blob/master/DOCUMENTATION.md
 
