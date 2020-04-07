@@ -4,6 +4,7 @@ FROM python:3.7-slim
 
 ENV USER defaultUser
 ENV PASS defaultPass
+ENV SIMULATION True
 
 RUN apt-get update && apt-get install -y --no-install-recommends wget git \
 	&& rm -rf /var/lib/apt/lists/*
