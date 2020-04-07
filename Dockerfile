@@ -2,8 +2,8 @@
 # https://hub.docker.com/_/python
 FROM python:3.7-slim
 
-ENV USER
-ENV PASS
+ENV USER defaultUser
+ENV PASS defaultPass
 
 # Install production dependencies.
 RUN pip install instapy \
