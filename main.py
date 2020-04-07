@@ -1,28 +1,22 @@
 import os
 import sys
-from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+from http.server import HTTPServer, CGIHTTPRequestHandler
+import threading
 from instapy import InstaPy
 
 ## Start a simple HTTP Server
 
-#This class will handles any incoming request from
-#the browser 
-class myHandler(BaseHTTPRequestHandler):	
-  #Handler for the GET requests
-  def do_GET(self):
-    self.send_response(200)
-    self.send_header('Content-type','text/html')
-    self.end_headers()
-    # Send the html message
-    self.wfile.write("ok")
-    return
-  
-server = HTTPServer(('', 8080), myHandler)
-print 'Started httpserver on port 8080'
-	
-#Wait forever for incoming htto requests
-server.serve_forever()
+def start_server(path, port=8000):
+    '''Start a simple webserver serving path on port'''
+    os.chdir(path)
+    httpd = HTTPServer(('', port), CGIHTTPRequestHandler)
+    httpd.serve_forever()
 
+# Start the server in a new thread
+port = 8000
+daemon = threading.Thread(name='daemon_server', target=start_server, args=('.', port))
+daemon.setDaemon(True) # Set as a daemon so it will be killed once the main thread is dead.
+daemon.start()
 
 ## Instapy Documentation: https://github.com/timgrossmann/InstaPy/blob/master/DOCUMENTATION.md
 
