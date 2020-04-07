@@ -6,6 +6,8 @@ import os
 session = InstaPy(username=os.environ.get('USER'), password=os.environ.get('PASS'), headless_browser=True)
 session.login()
 
+session.set_simulation(enabled=os.environ.get('SIMULATION'))
+
 ## Set quota limits to keep Instagram from banning you because it thinks you're a bot
 
 session.set_quota_supervisor(enabled=True, sleep_after=["likes", "comments_d", "follows", "unfollows", "server_calls_h"], sleepyhead=True, stochastic_flow=True, notify_me=False,
