@@ -1,0 +1,13 @@
+version: "3"
+services:
+  instabotlol:
+    env_file:
+    - bot-variables.env
+    image: gcr.io/instagrambot-273500/github.com/denovopress/instabotlol:latest
+    ports:
+      - "8000:80"
+  watchtower:
+    image: containrrr/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 30
