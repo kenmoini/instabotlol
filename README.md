@@ -1,6 +1,16 @@
 # instabotlol
 Just an instagram bot
 
+## Deploy with Docker Compose
+
+```bash
+git clone https://github.com/kenmoini/instabotlol
+cd instabotlol
+cp bot-variables.env.example bot-variables.env
+# modify the bot-variables.env file
+sudo docker-compose up -d
+```
+
 ## Deploy to Google Cloud Run
 
 1. Create a Project in GCP
