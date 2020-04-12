@@ -3,3 +3,9 @@ env_variables:
   USER: defaultUser
   PASS: defaultPass
   SIMULATION: True
+  PORTAINER_DOMAIN: example.com
+  EMAIL: you@domain.com
+  STAGING: 1
+  DOMAINS: "(${PORTAINER_DOMAIN} www.${PORTAINER_DOMAIN})"
+  RSA_KEY_SIZE: 4096
+  DATA_PATH: "./data/certbot"
