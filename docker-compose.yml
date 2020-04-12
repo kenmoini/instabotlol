@@ -3,24 +3,52 @@ services:
   instabotlol:
     env_file:
     - bot-variables.env
+    restart: never
     image: gcr.io/instagrambot-273500/github.com/denovopress/instabotlol:latest
     ports:
+      #instabot healthz
       - "81:8000"
 
   watchtower:
     image: containrrr/watchtower
+    restart: unless-stopped
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 30
+    command: --interval 120
 
   portainer:
     image: portainer/portainer
+    restart: unless-stopped
     ports:
-      - "80:9000"
+      #portainer web UI
+      - "9000:9000"
       - "8000:8000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - portainer_data:/data
+  
+  nginx:
+    image: nginx:1.15-alpine
+    restart: unless-stopped
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    ports:
+      #Actual HTTP{S} Ports
+      - "80:80"
+      - "443:443"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+
+  certbot:
+    image: certbot/certbot
+    restart: unless-stopped
+    volumes:
+      - certbot_conf:/etc/letsencrypt
+      - certbot_www:/var/www/certbot
+    entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   portainer_data:
+  certbot_conf:
+  certbot_www:
