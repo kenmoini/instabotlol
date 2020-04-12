@@ -31,24 +31,21 @@ services:
     image: nginx:1.15-alpine
     restart: unless-stopped
     volumes:
-      - ./config/nginx:/etc/nginx/conf.d
-      - certbot_conf:/etc/letsencrypt
-      - certbot_www:/var/www/certbot
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
     ports:
       #Actual HTTP{S} Ports
       - "80:80"
       - "443:443"
-    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; nginx -s reload; done & nginx -g \"daemon off;\"'"
+    command: "/bin/sh -c 'while :; do sleep 6h & wait $${!}; /opt/nginx/reload_nginx.sh; done & /opt/nginx/run_nginx.sh'"
 
   certbot:
     image: certbot/certbot
     restart: unless-stopped
     volumes:
-      - certbot_conf:/etc/letsencrypt
-      - certbot_www:/var/www/certbot
+      - ./data/certbot/conf:/etc/letsencrypt
+      - ./data/certbot/www:/var/www/certbot
     entrypoint: "/bin/sh -c 'trap exit TERM; while :; do certbot renew; sleep 12h & wait $${!}; done;'"
 
 volumes:
   portainer_data:
-  certbot_conf:
-  certbot_www:
